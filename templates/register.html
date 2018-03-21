@@ -1,0 +1,36 @@
+{% from "form_macro.html" import render_field %}
+<html>
+    <head>
+        <title>Register yourself to loyalty!</title>
+    </head>
+<body>
+    <form method="POST" action= {{url_for('register')}}>
+        {{ form.csrf_token }}
+        <dl>
+            {{ render_field(form.name) }}
+            <dt>{{ form.gender.label }} 
+            <dd>{% for subfield in form.gender %}
+                <tr>
+                    <td>{{ subfield }}</td>
+                    <td>{{ subfield.label }}</td>
+                </tr>
+                {% endfor %}
+                {% if form.gender.errors %}
+                <div>
+                    <ul class=errors>
+                        {% for error in form.gender.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            {{ render_field(form.uname) }}
+            {{ render_field(form.password) }}
+        </dl>
+        {% if error %}
+            {{ error }}
+        {% endif %}<br>
+        <input type='submit' value='Register me!'>
+    </form>
+</body>
+</html>
