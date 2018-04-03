@@ -1,9 +1,11 @@
 {% extends "index_base.html" %}
 {% block content %}
 {% if session.logged_in %}
-    <a href= {{ url_for('logout') }}>Logout</a><br>
+    <div class="container"><a href= {{ url_for('logout') }}>Logout</a><br>
+    </div>
     {{ session.username }}
 {% else %}
-    <a href= {{ url_for('login') }}>Login</a> | <a href= {{ url_for('register') }}>Register</a>
+    <div class="container"><a href= {{ url_for('login') }}>Login</a> | <a href= {{ url_for('register') }}>Register</a>
+    </div>
 {% endif %}
 {% endblock %}

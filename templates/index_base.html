@@ -1,10 +1,71 @@
+{% from "form_macro.html" import render_field %}
+
 <!doctype html>
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
         <title>The Loyal Network</title>
+        <link rel="stylesheet" href="./../static/styles/bootstrap.min.css">
+        <link rel="stylesheet" href="./../static/styles/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+        <style>
+        </style>
     </head>
-    <body>
-        {% block content %}{% endblock %}<br>
-        <h2>Welcome to The Loyal Network!</h2>
+    <body class="backg">
+        <nav class="navbar navbar-expand-xs navbar-light">
+            <div class="navbar-brand d-flex flex-column">
+                <div><img src="./../static/img/tln_logo_m.png" width=7% height=7% class="d-inline-block">
+                    <img src="./../static/img/title_alt.png" width=40% height=5% class="d-inline-block">
+                </div>
+            </div>
+            <ul class="navbar-nav d-flex flex-row ml-md-auto">
+                <li class="nav-item"><button class="btn btn-outline-signin mr-1" data-toggle="modal" data-target="#signinbox">Sign In</button></li>
+                <li class="nav-item"><a class="btn btn-outline-secondary mr-1" href= {{ url_for('register') }}>Register</a></li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="row justify-content-end">
+                <div class="col-4">
+                <h1 class="brand-font">For The Puritans</h1>
+                <div class="base-font">theLoyalNetwork was created with one idea: being close to the people that matter the most.</div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="signinbox">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Sign In</h5>
+                        </div>
+                        <div class="modal-body">
+                                <form action= {{url_for('login')}} method="POST">
+                                        {{ form.csrf_token }}
+                                            {{ render_field(form.uname) }}
+                                            {{ render_field(form.password) }}   <!-- fix password field -->
+                                            <br>
+                                            {%if error %}
+                                                {{ error }}
+                                            {% endif %}
+                                        </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class='btn btn-outline-signin' type='submit' value='Login'>Log In</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        
+        <script>
+        document.addEventListener('DOMContentLoaded', signIn, false);
+        function signIn(){
+            var showModal = {{ modal_val }};
+            console.log(showModal);
+            if(showModal) $("#signinbox").modal("show");
+        }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
 </html>

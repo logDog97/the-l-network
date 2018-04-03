@@ -1,36 +1,44 @@
-{% from "form_macro.html" import render_field %}
+{% from "form_macro_register.html" import render_field %}
 <html>
     <head>
-        <title>Register yourself to loyalty!</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="./../static/styles/bootstrap.min.css">
+        <link rel="stylesheet" href="./../static/styles/style.css">
+        <title>Register yourself!</title>
+        <style>
+        .jumb-mod{
+            background-color: rgba(172, 172, 172, 0.4);
+        }
+        </style>
     </head>
-<body>
+<body class="d-flex justify-content-center flex-row back_reg" >
+    <div class="jumbotron jumb-mod">
+            <div class="container justify-content-center d-flex">
+                    <img src="./../static/img/tln_logo.png" width=72 height=72>
+            </div>
     <form method="POST" action= {{url_for('register')}}>
         {{ form.csrf_token }}
-        <dl>
             {{ render_field(form.name) }}
-            <dt>{{ form.gender.label }} 
-            <dd>{% for subfield in form.gender %}
-                <tr>
-                    <td>{{ subfield }}</td>
-                    <td>{{ subfield.label }}</td>
-                </tr>
-                {% endfor %}
-                {% if form.gender.errors %}
-                <div>
-                    <ul class=errors>
-                        {% for error in form.gender.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
+            {{ form.gender.label }}: <br>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                              <input type="radio" name ="gender" id="gender" autocomplete="off" value="m" checked> Male
+                            </label>
+                            <label class="btn btn-secondary">
+                              <input type="radio" name="gender" id="gender" value="f" autocomplete="off"> Female
+                            </label>
+            </div><br>
             {{ render_field(form.uname) }}
             {{ render_field(form.password) }}
-        </dl>
         {% if error %}
-            {{ error }}
+            <small>{{ error }}</small>
         {% endif %}<br>
-        <input type='submit' value='Register me!'>
+        <button class='btn btn-outline-secondary' type='submit' value='Login'>Register</button>
     </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

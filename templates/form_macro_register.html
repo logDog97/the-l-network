@@ -1,6 +1,5 @@
 {% macro render_field(field) %}
-    <div class="form-group">
-    <label for= {{ field.id }} >{{ field.label.text }} </label>
+    <label for= {{ field.id }} >{{ field.label.text }}: </label>
     <input id= {{ field.id }} name= {{ field.name }} type = {{ field.type }} value = "" class = "form-control">
     {% if field.errors %}
     <div class="form-text text-muted">

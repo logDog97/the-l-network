@@ -79,7 +79,27 @@ def close_db(exception):
 def index():
     if session.get('logged_in') == None:
         session['logged_in'] = False
-    return render_template('index.html')
+    details = LoginForm()
+    error = None
+    show_signin_modal = 0
+    if details.validate_on_submit():
+        db = get_db()
+        cur = db.cursor()
+        cur.execute("select uName, userPass from users where uName=?", (details.uname.data,))
+        r = cur.fetchone()
+        if not r:
+            error = "Username doesn't exist."
+            show_signin_modal = 1
+        else:
+            if details.password.data == r['userPass']:
+                flash("You have logged in!")
+                session['logged_in'] = 1
+                session['username'] = details.uname.data
+                return redirect('/')
+            else:
+                error = "Password is incorrect."
+                show_signin_modal = 1
+    return render_template('index_base.html', form=details, error=error, modal_val=0)
 
 # @app.route('/register_action/', methods = ['POST'])
 # def register_action():
@@ -120,10 +140,16 @@ def register():
         error = 'You are already logged in!'
     return render_template('register.html', form=details, error=error)
 
-@app.route('/login/', methods=['GET', 'POST']) # also handle the flash thingy
+@app.route('/login/', methods=['GET', 'POST']) 
+
 def login():
     details = LoginForm()
     error = None
+    show_signin_modal = 0
+    if details.uname.errors != None or details.password.errors != None:
+            print(details.uname.errors)
+            print(details.password.errors)
+            show_signin_modal = 1
     if details.validate_on_submit():
         db = get_db()
         cur = db.cursor()
@@ -131,15 +157,21 @@ def login():
         r = cur.fetchone()
         if not r:
             error = "Username doesn't exist."
+            show_signin_modal = 1
         else:
             if details.password.data == r['userPass']:
                 flash("You have logged in!")
-                session['logged_in'] = True
+                session['logged_in'] = 1
                 session['username'] = details.uname.data
-                return redirect('/')
+                return redirect(url_for('show_user', name=details.uname.data))
             else:
                 error = "Password is incorrect."
-    return render_template('login.html', form=details, error=error)
+                show_signin_modal = 1
+    return render_template('index_base.html', form=details, error=error, modal_val=show_signin_modal)
+
+@app.route('/users/<name>')
+def show_user(name):
+    return render_template('user_page.html', uname=name)
 
 @app.route('/logout/')
 def logout():
